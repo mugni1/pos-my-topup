@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { HTMLAttributes } from 'vue'
+  import { ref, type HTMLAttributes } from 'vue'
   import * as z from 'zod'
   import { cn } from '@/lib/utils'
   import { Button } from '@/components/ui/button'
@@ -9,7 +9,7 @@
   import { toTypedSchema } from '@vee-validate/zod'
   import { useForm } from 'vee-validate'
   import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-  import { Eye, KeySquareIcon, LucidePlaneTakeoff, Mail } from 'lucide-vue-next'
+  import { Eye, EyeClosed, KeySquareIcon, LucidePlaneTakeoff, Mail } from 'lucide-vue-next'
 
   // PROPS
   const props = defineProps<{
@@ -29,10 +29,16 @@
     validationSchema: formSchema,
   })
 
+  // PROPS
+  const isPassword = ref(true)
+
   // METHODS
   const onSubmit = form.handleSubmit((values) => {
     console.log('Form submitted!', values)
   })
+  const handleCahangeType = () => {
+    isPassword.value = !isPassword.value
+  }
 </script>
 
 <template>
@@ -57,17 +63,25 @@
           <FormField v-slot="{ componentField, errorMessage }" name="password">
             <FormItem>
               <FormLabel> <KeySquareIcon class="size-4.5" /> Password</FormLabel>
-              <FormControl>
-                <div class="relative flex items-center justify-end">
-                  <Button class="absolute me-0.5" variant="ghost" size="sm"><Eye /> </Button>
+              <div class="relative flex items-center">
+                <FormControl>
                   <Input
-                    :class="errorMessage && 'border-destructive ring-destructive'"
-                    type="text"
-                    placeholder="••••••••"
+                    :type="isPassword ? 'password' : 'text'"
+                    :placeholder="isPassword ? '••••••••' : 'mypassword123'"
                     v-bind="componentField"
                   />
-                </div>
-              </FormControl>
+                  <Button
+                    @click="handleCahangeType"
+                    type="button"
+                    class="absolute me-0.5 right-0"
+                    variant="ghost"
+                    size="sm"
+                  >
+                    <Eye v-if="!isPassword" />
+                    <EyeClosed v-else />
+                  </Button>
+                </FormControl>
+              </div>
               <FormMessage />
             </FormItem>
           </FormField>
