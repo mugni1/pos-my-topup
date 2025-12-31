@@ -1,12 +1,10 @@
 <script setup lang="ts">
   import { ref, type HTMLAttributes } from 'vue'
-  import * as z from 'zod'
   import { cn } from '@/lib/utils'
   import { Button } from '@/components/ui/button'
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
   import { Field, FieldDescription, FieldGroup } from '@/components/ui/field'
   import { Input } from '@/components/ui/input'
-  import { toTypedSchema } from '@vee-validate/zod'
   import { useForm } from 'vee-validate'
   import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
   import { Eye, EyeClosed, KeySquareIcon, Loader2, LucidePlaneTakeoff, Mail } from 'lucide-vue-next'
@@ -14,29 +12,23 @@
   import { usePostAuthLogin } from '@/hooks/usePostAuthLogin'
   import { toast } from 'vue-sonner'
   import { HttpStatusCode } from 'axios'
+  import Cookies from 'js-cookie'
+  import { loginSchemaValidate } from '@/validations/auth'
+  import { useRouter } from 'vue-router'
 
   // PROPS
   const props = defineProps<{
     class?: HTMLAttributes['class']
   }>()
 
-  // HOOKS
-  const { mutateAsync, isPending } = usePostAuthLogin()
-
-  // SCHEMA
-  const formSchema = toTypedSchema(
-    z.object({
-      email: z.string().email().min(2).max(50),
-      password: z.string().min(8).max(12),
-    })
-  )
-
   // INIT FORM
   const form = useForm({
-    validationSchema: formSchema,
+    validationSchema: loginSchemaValidate,
   })
 
-  // PROPS
+  // STATE
+  const { mutateAsync, isPending } = usePostAuthLogin()
+  const router = useRouter()
   const isPassword = ref(true)
 
   // METHODS
@@ -46,7 +38,9 @@
       if (results.status != HttpStatusCode.Ok) {
         toast.error(results.message, { action: { label: 'Close' } })
       } else {
+        Cookies.set('token', results.data?.token || '')
         toast.success(results.message, { action: { label: 'Close' } })
+        router.push('/')
       }
     } catch (err: unknown) {
       const error = err as PostLoginResponseType

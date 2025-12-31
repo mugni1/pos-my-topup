@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import Cookies from 'js-cookie'
 import CategoriesView from '@/views/CategoriesView.vue'
 import ItemsView from '@/views/ItemsView.vue'
 import OrdersView from '@/views/OrdersView.vue'
@@ -17,7 +18,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const token = ""
+  const token = Cookies.get('token')
   if (to.meta.requiresAuth && !token) {
     next({ name: 'login' })
     return
