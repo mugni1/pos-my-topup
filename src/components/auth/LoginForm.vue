@@ -56,8 +56,8 @@
   <section :class="cn('flex flex-col gap-6', props.class)">
     <Card>
       <CardHeader class="text-center">
-        <CardTitle class="text-xl"> Welcome back </CardTitle>
-        <CardDescription> Login with your email and password account </CardDescription>
+        <CardTitle class="text-xl"> Welcome Back </CardTitle>
+        <CardDescription> Login with your email and password. </CardDescription>
       </CardHeader>
       <CardContent>
         <form @submit="handleSubmit" class="space-y-3">
@@ -71,7 +71,7 @@
             </FormItem>
           </FormField>
 
-          <FormField v-slot="{ componentField, errorMessage }" name="password">
+          <FormField v-slot="{ componentField }" name="password">
             <FormItem>
               <FormLabel> <KeySquareIcon class="size-4.5" /> Password</FormLabel>
               <div class="relative flex items-center">
