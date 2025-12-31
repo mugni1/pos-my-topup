@@ -21,17 +21,17 @@
     SidebarHeader,
     SidebarRail,
   } from '@/components/ui/sidebar'
+  import { useAuthStore } from '@/stores/auth'
+  import type { UserType } from '@/types/global.type'
 
+  // PROPS
   const props = withDefaults(defineProps<SidebarProps>(), {
     collapsible: 'icon',
   })
 
+  // STATE
+  const { user } = useAuthStore()
   const data = {
-    user: {
-      name: 'shadcn',
-      email: 'm@example.com',
-      avatar: '/avatars/shadcn.jpg',
-    },
     teams: {
       name: 'POS MyTopUp',
       logo: GalleryVerticalEnd,
@@ -65,7 +65,7 @@
       <NavMain :items="data.navMain" />
     </SidebarContent>
     <SidebarFooter>
-      <NavUser :user="data.user" />
+      <NavUser :user="user" />
     </SidebarFooter>
     <SidebarRail />
   </Sidebar>

@@ -1,4 +1,5 @@
 import type { HttpStatusCode } from "axios"
+import type { UserType } from "./global.type"
 
 export interface PostLoginPayloadType {
     email: string
@@ -10,18 +11,8 @@ export interface PostLoginResponseType {
     message: string
     data: {
         token: string
-        user: {
-            id: string,
-            name: string
-            email: string
-            phone: string
-            bio: null | string,
-            gender: null | string,
-            role: string,
-            createdAt: string
-            updatedAt: string
-        }
-    } | null
+        user: UserType | null
+    },
     meta: null,
     errors: null
 }

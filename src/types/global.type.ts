@@ -19,3 +19,17 @@ export interface MetaType {
     sortBy: string
     total: number
 }
+
+export interface UserType {
+    id: string,
+    name: string
+    email: string
+    phone: string,
+    password: null,
+    bio: null | string,
+    provider: null | string,
+    gender: null | string,
+    role: string,
+    createdAt: string,
+    updatedAt: string
+}

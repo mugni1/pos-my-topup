@@ -15,6 +15,8 @@
   import Cookies from 'js-cookie'
   import { loginSchemaValidate } from '@/validations/auth'
   import { useRouter } from 'vue-router'
+  import { useAuthStore } from '@/stores/auth'
+  import type { UserType } from '@/types/global.type'
 
   // PROPS
   const props = defineProps<{
@@ -28,6 +30,7 @@
 
   // STATE
   const { mutateAsync, isPending } = usePostAuthLogin()
+  const { setUser } = useAuthStore()
   const router = useRouter()
   const isPassword = ref(true)
 
@@ -39,6 +42,7 @@
         toast.error(results.message, { action: { label: 'Close' } })
       } else {
         Cookies.set('token', results.data?.token || '')
+        setUser(results.data.user as UserType)
         toast.success(results.message, { action: { label: 'Close' } })
         router.push('/')
       }
