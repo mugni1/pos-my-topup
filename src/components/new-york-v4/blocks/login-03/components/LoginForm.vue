@@ -9,12 +9,19 @@
   import { toTypedSchema } from '@vee-validate/zod'
   import { useForm } from 'vee-validate'
   import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-  import { Eye, EyeClosed, KeySquareIcon, LucidePlaneTakeoff, Mail } from 'lucide-vue-next'
+  import { Eye, EyeClosed, KeySquareIcon, Loader2, LucidePlaneTakeoff, Mail } from 'lucide-vue-next'
+  import type { PostLoginPayloadType, PostLoginResponseType } from '@/types/auth'
+  import { usePostAuthLogin } from '@/hooks/usePostAuthLogin'
+  import { toast } from 'vue-sonner'
+  import { HttpStatusCode } from 'axios'
 
   // PROPS
   const props = defineProps<{
     class?: HTMLAttributes['class']
   }>()
+
+  // HOOKS
+  const { mutateAsync, isPending } = usePostAuthLogin()
 
   // SCHEMA
   const formSchema = toTypedSchema(
@@ -33,8 +40,18 @@
   const isPassword = ref(true)
 
   // METHODS
-  const onSubmit = form.handleSubmit((values) => {
-    console.log('Form submitted!', values)
+  const handleSubmit = form.handleSubmit(async (values: PostLoginPayloadType) => {
+    try {
+      const results = await mutateAsync(values)
+      if (results.status != HttpStatusCode.Ok) {
+        toast.error(results.message, { action: { label: 'Close' } })
+      } else {
+        toast.success(results.message, { action: { label: 'Close' } })
+      }
+    } catch (err: unknown) {
+      const error = err as PostLoginResponseType
+      toast.error(error.message, { action: { label: 'Close' } })
+    }
   })
   const handleCahangeType = () => {
     isPassword.value = !isPassword.value
@@ -49,7 +66,7 @@
         <CardDescription> Login with your email and password account </CardDescription>
       </CardHeader>
       <CardContent>
-        <form @submit="onSubmit" class="space-y-3">
+        <form @submit="handleSubmit" class="space-y-3">
           <FormField v-slot="{ componentField }" name="email">
             <FormItem>
               <FormLabel> <Mail class="size-4.5" /> Email</FormLabel>
@@ -88,7 +105,12 @@
 
           <FieldGroup class="mt-5">
             <Field>
-              <Button type="submit"> <LucidePlaneTakeoff class="size-4.5" /> Login </Button>
+              <Button v-if="!isPending" type="submit">
+                <LucidePlaneTakeoff class="size-4.5" /> Login
+              </Button>
+              <Button v-else type="button" disabled>
+                <Loader2 class="size-4.5 animate-spin" /> Loading...
+              </Button>
             </Field>
           </FieldGroup>
         </form>

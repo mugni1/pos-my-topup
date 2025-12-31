@@ -3,6 +3,6 @@ export const API_VERSION = {
 }
 
 export const ENDPOINT = {
-  LOGIN: `${API_VERSION.V1}/auth/login`,
+  LOGIN: `/auth/login`,
   CATEGORY: `/category`
 }
