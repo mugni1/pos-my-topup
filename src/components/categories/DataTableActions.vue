@@ -77,7 +77,7 @@
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
-        <Button variant="default" @click="handleChangeAlertDialogDelete">
+        <Button variant="outline" @click="handleChangeAlertDialogDelete">
           <XCircle /> Cancel
         </Button>
         <Button v-if="isPending" variant="destructive" class="cursor-not-allowed" disabled>
