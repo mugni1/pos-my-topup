@@ -126,3 +126,24 @@
     @apply bg-background text-foreground font-inter selection:text-background selection:bg-foreground;
   }
 }
+
+
+/* Custom scrollbar untuk seluruh aplikasi */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted-foreground/20;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/50;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/70;
+}

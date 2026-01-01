@@ -5,6 +5,7 @@
   import type { SortColumnType } from '@/types/global.type'
   import { useGetItems } from '@/hooks/useGetItems'
   import { columns } from '@/components/items/columns'
+  import CreateItemForm from '@/components/items/CreateItemForm.vue'
 
   // STATE
   const search = ref('')
@@ -62,6 +63,8 @@
     @sort-change="handleChangeSortColumn"
     @refetch="handleRefetch"
   >
-    <template #create-slot> </template>
+    <template #create-slot>
+      <CreateItemForm />
+    </template>
   </DataTable>
 </template>

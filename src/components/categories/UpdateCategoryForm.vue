@@ -81,7 +81,7 @@
             Make changes to your profile here. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
-        <div class="space-y-3">
+        <div class="max-h-[65vh] overflow-y-scroll space-y-4 my-3 py-2 px-5 me-2">
           <FormField v-slot="{ componentField }" name="name">
             <FormItem>
               <FormLabel>Name</FormLabel>
@@ -102,13 +102,13 @@
           </FormField>
         </div>
         <DialogFooter>
-          <DialogClose>
-            <Button type="button" variant="outline"> <XCircle /> Cancel </Button>
-          </DialogClose>
           <Button type="submit" v-if="!isPending"> <SaveIcon /> Save changes </Button>
           <Button type="button" v-else disabled>
             <Loader2Icon class="animate-spin" /> Loading..
           </Button>
+          <DialogClose>
+            <Button type="button" variant="outline"> <XCircle /> Cancel </Button>
+          </DialogClose>
         </DialogFooter>
       </form>
     </DialogContent>
