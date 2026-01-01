@@ -19,15 +19,6 @@ export const columns: ColumnDef<CategoryType>[] = [
         },
     },
     {
-        accessorKey: 'id',
-        header: () => {
-            return h('div', { class: 'text-start' }, 'ID')
-        },
-        cell: ({ row }) => {
-            return h('div', { class: 'text-start' }, row.original.id)
-        },
-    },
-    {
         accessorKey: 'name',
         header: () => {
             return h('div', { class: 'text-start' }, 'Name')
@@ -52,6 +43,15 @@ export const columns: ColumnDef<CategoryType>[] = [
         },
         cell: ({ row }) => {
             return h('div', { class: 'text-start' }, formatDateToLocale(row.original.createdAt))
+        },
+    },
+    {
+        accessorKey: 'updatedAt',
+        header: () => {
+            return h('div', { class: 'text-start' }, 'Updated At')
+        },
+        cell: ({ row }) => {
+            return h('div', { class: 'text-start' }, formatDateToLocale(row.original.updatedAt))
         },
     },
     {
