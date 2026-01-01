@@ -5,6 +5,7 @@
   import { useGetCategories } from '@/hooks/useGetCategories'
   import { provide } from 'vue'
   import CreateCategoryForm from '@/components/categories/CreateCategoryForm.vue'
+  import type { SortColumnType } from '@/types/global.type'
 
   // STATE
   const search = ref('')
@@ -25,15 +26,15 @@
   const { data, isPending, isError, isFetching, refetch } = useGetCategories(tableParams)
 
   // METHODS
-  const handleEmitChangePage = (page: number) => {
-    currentPage.value = page
+  const handleEmitChangePage = (value: number) => {
+    currentPage.value = value
   }
-  const handleSortChange = (data: { columnId: string; direction: 'asc' | 'desc' | null }) => {
-    orderBy.value = data.columnId
-    if (data.direction == null) {
+  const handleSortChange = (value: SortColumnType) => {
+    orderBy.value = value.columnId
+    if (value.direction == null) {
       sortBy.value = 'desc'
     } else {
-      sortBy.value = data.direction
+      sortBy.value = value.direction
     }
   }
   const handleChangeKeyword = (value: string) => {
@@ -56,7 +57,7 @@
     :status-code="data?.status || 500"
     :current-page="currentPage"
     :item-per-page="itemPerPage"
-    :message="data?.message || 'Internal Server Error.'"
+    :message="data?.message || 'Internal Server Error'"
     @keyword="handleChangeKeyword"
     @goto-page="handleEmitChangePage"
     @sort-change="handleSortChange"
