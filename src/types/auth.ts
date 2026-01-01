@@ -12,7 +12,7 @@ export interface PostLoginResponseType {
     data: {
         token: string
         user: UserType | null
-    },
+    } | null,
     meta: null,
     errors: null
 }

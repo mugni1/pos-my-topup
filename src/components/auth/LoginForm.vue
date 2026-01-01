@@ -8,7 +8,6 @@
   import { useForm } from 'vee-validate'
   import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
   import { Eye, EyeClosed, KeySquareIcon, Loader2, LucidePlaneTakeoff, Mail } from 'lucide-vue-next'
-  import type { PostLoginPayloadType, PostLoginResponseType } from '@/types/auth'
   import { usePostAuthLogin } from '@/hooks/usePostAuthLogin'
   import { toast } from 'vue-sonner'
   import { HttpStatusCode } from 'axios'
@@ -16,6 +15,7 @@
   import { loginSchemaValidate } from '@/validations/auth'
   import { useRouter } from 'vue-router'
   import { useAuthStore } from '@/stores/auth'
+  import type { PostLoginPayloadType, PostLoginResponseType } from '@/types/auth'
   import type { UserType } from '@/types/global.type'
 
   // PROPS
@@ -42,7 +42,9 @@
         toast.error(results.message, { action: { label: 'Close' } })
       } else {
         Cookies.set('token', results.data?.token || '')
-        setUser(results.data.user as UserType)
+        if (results.data) {
+          setUser(results.data.user)
+        }
         toast.success(results.message, { action: { label: 'Close' } })
         router.push('/')
       }
