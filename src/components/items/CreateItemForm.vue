@@ -22,12 +22,12 @@
     FormMessage,
   } from '../ui/form'
   import { Input } from '../ui/input'
-  import { inject, ref, watch } from 'vue'
+  import { computed, inject, ref, watch } from 'vue'
   import { useQueryClient } from '@tanstack/vue-query'
   import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
   import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '../ui/input-group'
-  // import type { PostItemResponse } from '@/types/items' // Ganti ke tipe item
-  // import { usePostItem } from '@/hooks/usePostItem' // Ganti ke hook untuk items
+  import { useGetCategories } from '@/hooks/useGetCategories'
+  import type { GetParamsType } from '@/types/global.type'
 
   // INIT FORM
   const form = useForm({
@@ -38,8 +38,17 @@
   })
 
   // STATE
+  const categoryParams = computed(
+    (): GetParamsType => ({
+      limit: 100,
+      orderBy: 'createdAt',
+      sortBy: 'desc',
+      page: 1,
+      search: '',
+    })
+  )
+  const { data: categoires, isPending } = useGetCategories(categoryParams)
   const isOpen = ref(false)
-  //   const { mutateAsync, isPending } = usePostItem() // Ganti ke hook untuk items
   const tableParams = inject('tableParams')
   const queryClient = useQueryClient()
   const displayPrice = ref('')
@@ -128,7 +137,9 @@
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="cmjuv6kj4000004iekx0hm8j9"> Electronics </SelectItem>
+                  <SelectItem v-for="category in categoires?.data || []" :value="category.id">
+                    {{ category.name }}
+                  </SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
