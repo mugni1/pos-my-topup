@@ -44,3 +44,17 @@ export interface PostCategoryResponse {
     meta: null,
     errors: null
 }
+
+export interface PutCategoryPayloadType {
+    id: string
+    name: string
+    code: string
+}
+
+export interface PutCategoryResponse {
+    status: HttpStatusCode,
+    message: string,
+    data: CategoryType | null,
+    meta: null,
+    errors: null
+}

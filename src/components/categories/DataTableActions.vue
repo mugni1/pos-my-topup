@@ -1,13 +1,6 @@
 <script setup lang="ts">
   import type { CategoryType, DeleteCategoryResponse } from '@/types/categories'
-  import {
-    CheckCircle2,
-    Loader2,
-    MoreHorizontal,
-    PenBoxIcon,
-    Trash2,
-    XCircle,
-  } from 'lucide-vue-next'
+  import { CheckCircle2, Loader2, MoreHorizontal, Trash2, XCircle } from 'lucide-vue-next'
   import { Button } from '@/components/ui/button'
   import {
     DropdownMenu,
@@ -28,6 +21,7 @@
   import { useDeleteCategory } from '@/hooks/useDeleteCategory'
   import { useQueryClient } from '@tanstack/vue-query'
   import { toast } from 'vue-sonner'
+  import UpdateCategoryForm from './UpdateCategoryForm.vue'
 
   // PROPS
   const props = defineProps<{
@@ -102,7 +96,7 @@
       <DropdownMenuItem variant="destructive" @click="handleChangeAlertDialogDelete">
         <Trash2 /> Delete
       </DropdownMenuItem>
-      <DropdownMenuItem variant="default"> <PenBoxIcon /> Update </DropdownMenuItem>
+      <UpdateCategoryForm :data="data" />
     </DropdownMenuContent>
   </DropdownMenu>
 </template>

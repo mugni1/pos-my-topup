@@ -2,7 +2,7 @@ import type { AxiosResponse } from 'axios';
 import { ENDPOINT } from './endpoints'
 import { httpClient } from './httpClient'
 import type { DeleteParamsType, GetParamsType } from '@/types/global.type';
-import type { DeleteCategoryResponse, GetCategoriesResponse, PostCategoryPayloadType, PostCategoryResponse } from '@/types/categories';
+import type { DeleteCategoryResponse, GetCategoriesResponse, PostCategoryPayloadType, PostCategoryResponse, PutCategoryPayloadType, PutCategoryResponse } from '@/types/categories';
 import type { PostLoginPayloadType } from '@/types/auth';
 
 // CATEGORY SERVICES
@@ -14,6 +14,9 @@ export const deleteCategoryAPI = async (params: DeleteParamsType): Promise<Axios
 }
 export const postCategoryAPI = async (payload: PostCategoryPayloadType): Promise<AxiosResponse<PostCategoryResponse>> => {
   return httpClient.post(`${ENDPOINT.CATEGORY}`, payload)
+}
+export const putCategoryAPI = async (payload: PutCategoryPayloadType): Promise<AxiosResponse<PutCategoryResponse>> => {
+  return httpClient.put(`${ENDPOINT.CATEGORY}/${payload.id}`, payload)
 }
 
 // AUTH SERVICES
