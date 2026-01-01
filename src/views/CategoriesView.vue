@@ -26,20 +26,20 @@
   const { data, isPending, isError, isFetching, refetch } = useGetCategories(tableParams)
 
   // METHODS
-  const handleEmitChangePage = (value: number) => {
+  const handleChangePage = (value: number) => {
     currentPage.value = value
   }
-  const handleSortChange = (value: SortColumnType) => {
+  const handleChangeKeyword = (value: string) => {
+    search.value = value
+    currentPage.value = 1
+  }
+  const handleChangeSortColumn = (value: SortColumnType) => {
     orderBy.value = value.columnId
     if (value.direction == null) {
       sortBy.value = 'desc'
     } else {
       sortBy.value = value.direction
     }
-  }
-  const handleChangeKeyword = (value: string) => {
-    search.value = value
-    currentPage.value = 1
   }
   const handleRefetch = () => {
     refetch()
@@ -59,8 +59,8 @@
     :item-per-page="itemPerPage"
     :message="data?.message || 'Internal Server Error'"
     @keyword="handleChangeKeyword"
-    @goto-page="handleEmitChangePage"
-    @sort-change="handleSortChange"
+    @goto-page="handleChangePage"
+    @sort-change="handleChangeSortColumn"
     @refetch="handleRefetch"
   >
     <template #create-slot>
