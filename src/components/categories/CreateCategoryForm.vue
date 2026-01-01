@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { PlusCircle, SaveIcon, XCircle } from 'lucide-vue-next'
+  import { Loader2Icon, PlusCircle, SaveIcon, XCircle } from 'lucide-vue-next'
   import { Button } from '../ui/button'
   import {
     Dialog,
@@ -15,18 +15,44 @@
   import { createCategorySchemaValidate } from '@/validations/categories'
   import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
   import { Input } from '../ui/input'
+  import { usePostCategory } from '@/hooks/usePostCategory'
+  import { HttpStatusCode } from 'axios'
+  import { toast } from 'vue-sonner'
+  import { inject, ref } from 'vue'
+  import { useQueryClient } from '@tanstack/vue-query'
+  import type { PostCategoryResponse } from '@/types/categories'
 
   // INIT FORM
   const form = useForm({ validationSchema: createCategorySchemaValidate })
 
+  // STATE
+  const isOpen = ref(false)
+  const { mutateAsync, isPending } = usePostCategory()
+  const tableParams = inject('tableParams')
+  const queryClient = useQueryClient()
+
   // METHODS
-  const handleSubmit = form.handleSubmit((values) => {
-    console.log(values)
+  const handleSubmit = form.handleSubmit(async (values) => {
+    try {
+      const results = await mutateAsync(values)
+      if (results.status != HttpStatusCode.Created) {
+        toast.error(results.message, { action: { label: 'Cancel' } })
+      } else {
+        toast.success(results.message, { action: { label: 'Close' } })
+        isOpen.value = false
+        queryClient.refetchQueries({
+          queryKey: ['categories', tableParams],
+        })
+      }
+    } catch (err: unknown) {
+      const error = err as PostCategoryResponse
+      toast.error(error.message, { action: { label: 'Cancel' } })
+    }
   })
 </script>
 
 <template>
-  <Dialog>
+  <Dialog v-model:open="isOpen">
     <DialogTrigger>
       <Button type="button"> <PlusCircle /> Create category</Button>
     </DialogTrigger>
@@ -63,7 +89,10 @@
           <DialogClose>
             <Button type="button" variant="outline"> <XCircle /> Cancel </Button>
           </DialogClose>
-          <Button type="submit"> <SaveIcon /> Save changes </Button>
+          <Button type="submit" v-if="!isPending"> <SaveIcon /> Save changes </Button>
+          <Button type="button" v-else disabled>
+            <Loader2Icon class="animate-spin" /> Loading..
+          </Button>
         </DialogFooter>
       </form>
     </DialogContent>

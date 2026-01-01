@@ -31,3 +31,16 @@ export interface DeleteCategoryResponse {
     meta: null
     errors: null
 }
+
+export interface PostCategoryPayloadType {
+    name: string
+    code: string
+}
+
+export interface PostCategoryResponse {
+    status: HttpStatusCode,
+    message: string,
+    data: CategoryType | null,
+    meta: null,
+    errors: null
+}
