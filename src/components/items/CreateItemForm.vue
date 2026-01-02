@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { PlusCircle, SaveIcon, XCircle } from 'lucide-vue-next'
+  import { Loader2, PlusCircle, SaveIcon, XCircle } from 'lucide-vue-next'
   import { Button } from '../ui/button'
   import {
     Dialog,
@@ -27,7 +27,11 @@
   import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
   import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '../ui/input-group'
   import { useGetCategories } from '@/hooks/useGetCategories'
+  import { usePostItem } from '@/hooks/usePostItem'
+  import { HttpStatusCode } from 'axios'
+  import { toast } from 'vue-sonner'
   import type { GetParamsType } from '@/types/global.type'
+  import type { PostItemResponse } from '@/types/items'
 
   // INIT FORM
   const form = useForm({
@@ -47,7 +51,8 @@
       search: '',
     })
   )
-  const { data: categoires, isPending } = useGetCategories(categoryParams)
+  const { data: categories, isPending: categoriesPending } = useGetCategories(categoryParams)
+  const { mutateAsync: createAsync, isPending: createPending } = usePostItem()
   const isOpen = ref(false)
   const tableParams = inject('tableParams')
   const queryClient = useQueryClient()
@@ -64,7 +69,21 @@
     return parseInt(formattedValue.replace(/\./g, ''), 10) || 0
   }
   const handleSubmit = form.handleSubmit(async (values) => {
-    console.log('Submitting values:', values)
+    try {
+      const results = await createAsync({ ...values, price: values.price.toString() })
+      if (results.status != HttpStatusCode.Created) {
+        toast.error(results.message, { action: { label: 'Close' } })
+      } else {
+        toast.success(results.message, { action: { label: 'Close' } })
+        isOpen.value = false
+        queryClient.refetchQueries({
+          queryKey: ['items', tableParams],
+        })
+      }
+    } catch (err: unknown) {
+      const error = err as PostItemResponse
+      toast.error(error.message, { action: { label: 'Close' } })
+    }
   })
 
   // WATCHERS
@@ -133,11 +152,13 @@
               <Select v-bind="componentField">
                 <FormControl>
                   <SelectTrigger class="w-full">
-                    <SelectValue placeholder="Select category" />
+                    <SelectValue
+                      :placeholder="categoriesPending ? 'Loading..' : 'Select category'"
+                    />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem v-for="category in categoires?.data || []" :value="category.id">
+                  <SelectItem v-for="category in categories?.data || []" :value="category.id">
                     {{ category.name }}
                   </SelectItem>
                 </SelectContent>
@@ -207,7 +228,10 @@
         </div>
 
         <DialogFooter>
-          <Button type="submit"> <SaveIcon /> Save Changes </Button>
+          <Button v-if="createPending" type="button" disabled>
+            <Loader2 class="animate-spin" /> Loading..
+          </Button>
+          <Button v-else type="submit"> <SaveIcon /> Save Changes </Button>
           <DialogClose as-child>
             <Button type="button" variant="outline">
               <XCircle />

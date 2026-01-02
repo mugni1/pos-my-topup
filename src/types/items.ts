@@ -21,3 +21,30 @@ export interface GetItemsResponse {
     meta: MetaType | null
     errors: null
 }
+
+export interface PostItemPayloadType {
+    image: File
+    name: string
+    price: string
+    category_id: string
+    merchant_name: string
+}
+
+export interface PostItemResponse {
+    status: HttpStatusCode
+    message: string
+    data: {
+        id: string
+        name: string
+        merchantName: string
+        imageUrl: string
+        imageId: string
+        price: number
+        quantity: number
+        categoryId: string
+        createdAt: string
+        updatedAt: string
+    } | null
+    meta: null
+    errors: null
+}

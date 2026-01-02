@@ -36,7 +36,7 @@
     try {
       const results = await mutateAsync(values)
       if (results.status != HttpStatusCode.Created) {
-        toast.error(results.message, { action: { label: 'Cancel' } })
+        toast.error(results.message, { action: { label: 'Close' } })
       } else {
         toast.success(results.message, { action: { label: 'Close' } })
         isOpen.value = false
@@ -46,7 +46,7 @@
       }
     } catch (err: unknown) {
       const error = err as PostCategoryResponse
-      toast.error(error.message, { action: { label: 'Cancel' } })
+      toast.error(error.message, { action: { label: 'Close' } })
     }
   })
 </script>
