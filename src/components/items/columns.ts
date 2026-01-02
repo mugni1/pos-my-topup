@@ -3,6 +3,7 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { formatDateToLocale } from '@/lib/date'
 import DataTableActions from './DataTableActions.vue'
 import type { ItemType } from '@/types/items'
+import ColumnImage from './ColumnImage.vue'
 
 export const columns: ColumnDef<ItemType>[] = [
     {
@@ -16,6 +17,15 @@ export const columns: ColumnDef<ItemType>[] = [
             const pageSize = table.getState().pagination.pageSize
             const number = (pageIndex * pageSize) + row.index + 1
             return h('div', { class: 'text-start' }, number.toString())
+        },
+    },
+    {
+        accessorKey: 'imageUrl',
+        header: () => {
+            return h('div', { class: 'text-start' }, 'Image')
+        },
+        cell: ({ row }) => {
+            return h(ColumnImage, { image_url: row.original.imageUrl })
         },
     },
     {
@@ -49,15 +59,6 @@ export const columns: ColumnDef<ItemType>[] = [
         },
         cell: ({ row }) => {
             return h('div', { class: 'text-start' }, row.original.category.name)
-        },
-    },
-    {
-        accessorKey: 'quantity',
-        header: () => {
-            return h('div', { class: 'text-start' }, 'Quantity')
-        },
-        cell: ({ row }) => {
-            return h('div', { class: 'text-start' }, row.original.quantity)
         },
     },
     {
