@@ -7,19 +7,6 @@ import ColumnImage from './ColumnImage.vue'
 
 export const columns: ColumnDef<ItemType>[] = [
     {
-        accessorKey: 'No',
-        enableSorting: false,
-        header: () => {
-            return h('div', { class: 'text-start' }, 'No.')
-        },
-        cell: ({ row, table }) => {
-            const pageIndex = table.getState().pagination.pageIndex
-            const pageSize = table.getState().pagination.pageSize
-            const number = (pageIndex * pageSize) + row.index + 1
-            return h('div', { class: 'text-start' }, number.toString())
-        },
-    },
-    {
         accessorKey: 'imageUrl',
         header: () => {
             return h('div', { class: 'text-start' }, 'Image')
