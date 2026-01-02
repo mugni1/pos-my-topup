@@ -86,7 +86,7 @@
           </FormField>
         </div>
         <DialogFooter>
-          <Button type="submit" v-if="!isPending"> <SaveIcon /> Save changes </Button>
+          <Button type="submit" v-if="!isPending"> <SaveIcon /> Save Changes </Button>
           <Button type="button" v-else disabled>
             <Loader2Icon class="animate-spin" /> Loading..
           </Button>
