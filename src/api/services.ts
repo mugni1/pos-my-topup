@@ -4,7 +4,7 @@ import { httpClient } from './httpClient'
 import type { DeleteParamsType, GetParamsType } from '@/types/global.type';
 import type { DeleteCategoryResponse, GetCategoriesResponse, PostCategoryPayloadType, PostCategoryResponse, PutCategoryPayloadType, PutCategoryResponse } from '@/types/categories';
 import type { PostLoginPayloadType } from '@/types/auth';
-import type { GetItemsResponse, PostItemPayloadType, PostItemResponse } from '@/types/items';
+import type { DeleteItemResponse, GetItemsResponse, PostItemPayloadType, PostItemResponse } from '@/types/items';
 
 // CATEGORY SERVICES
 export const getCategoriesAPI = async (params: GetParamsType): Promise<AxiosResponse<GetCategoriesResponse>> => {
@@ -28,6 +28,9 @@ export const postLoginAPI = async (payload: PostLoginPayloadType): Promise<Axios
 // ITEM SERVICES
 export const getItemsAPI = async (params: GetParamsType): Promise<AxiosResponse<GetItemsResponse>> => {
   return httpClient.get(ENDPOINT.ITEM, { params })
+}
+export const deleteItemAPI = async (params: DeleteParamsType): Promise<AxiosResponse<DeleteItemResponse>> => {
+  return httpClient.delete(`${ENDPOINT.ITEM}/${params.id}`)
 }
 export const postItemsAPI = async (payload: PostItemPayloadType): Promise<AxiosResponse<PostItemResponse>> => {
   const formData = new FormData()

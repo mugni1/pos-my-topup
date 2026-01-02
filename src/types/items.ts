@@ -34,21 +34,31 @@ export interface PostItemPayloadType {
     merchant_name: string
 }
 
+interface PostDeleteItemType {
+    id: string
+    name: string
+    merchantName: string
+    imageUrl: string
+    imageId: string
+    price: number
+    quantity: number
+    categoryId: string
+    createdAt: string
+    updatedAt: string
+}
+
 export interface PostItemResponse {
     status: HttpStatusCode
     message: string
-    data: {
-        id: string
-        name: string
-        merchantName: string
-        imageUrl: string
-        imageId: string
-        price: number
-        quantity: number
-        categoryId: string
-        createdAt: string
-        updatedAt: string
-    } | null
+    data: PostDeleteItemType | null
+    meta: null
+    errors: null
+}
+
+export interface DeleteItemResponse {
+    status: HttpStatusCode
+    message: string
+    data: PostDeleteItemType | null
     meta: null
     errors: null
 }
