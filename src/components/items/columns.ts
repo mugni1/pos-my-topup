@@ -42,6 +42,16 @@ export const columns: ColumnDef<ItemType>[] = [
         },
     },
     {
+        accessorKey: 'category.name',
+        enableSorting: false,
+        header: () => {
+            return h('div', { class: 'text-start' }, 'Category Name')
+        },
+        cell: ({ row }) => {
+            return h('div', { class: 'text-start' }, row.original.category.name)
+        },
+    },
+    {
         accessorKey: 'quantity',
         header: () => {
             return h('div', { class: 'text-start' }, 'Quantity')

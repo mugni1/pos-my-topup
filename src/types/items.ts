@@ -12,6 +12,10 @@ export interface ItemType {
     categoryId: string
     createdAt: string
     updatedAt: string
+    category: {
+        name: string
+        code: string
+    }
 }
 
 export interface GetItemsResponse {
