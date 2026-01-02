@@ -9,6 +9,7 @@
   } from '@/components/ui/dropdown-menu'
   import type { ItemType } from '@/types/items'
   import DeleteItemDialog from './DeleteItemDialog.vue'
+  import UpdateItemForm from './UpdateItemForm.vue'
 
   // PROPS
   const props = defineProps<{
@@ -27,6 +28,7 @@
     <DropdownMenuContent align="end">
       <DropdownMenuLabel>Actions</DropdownMenuLabel>
       <DeleteItemDialog :data="data" />
+      <UpdateItemForm :data="data" />
     </DropdownMenuContent>
   </DropdownMenu>
 </template>

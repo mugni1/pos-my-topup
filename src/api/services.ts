@@ -4,7 +4,7 @@ import { httpClient } from './httpClient'
 import type { DeleteParamsType, GetParamsType } from '@/types/global.type';
 import type { DeleteCategoryResponse, GetCategoriesResponse, PostCategoryPayloadType, PostCategoryResponse, PutCategoryPayloadType, PutCategoryResponse } from '@/types/categories';
 import type { PostLoginPayloadType } from '@/types/auth';
-import type { DeleteItemResponse, GetItemsResponse, PostItemPayloadType, PostItemResponse } from '@/types/items';
+import type { DeleteItemResponse, GetItemsResponse, PostItemPayloadType, PostItemResponse, PutItemPayloadType, PutItemResponse } from '@/types/items';
 
 // CATEGORY SERVICES
 export const getCategoriesAPI = async (params: GetParamsType): Promise<AxiosResponse<GetCategoriesResponse>> => {
@@ -40,4 +40,15 @@ export const postItemsAPI = async (payload: PostItemPayloadType): Promise<AxiosR
   formData.append('category_id', payload.category_id)
   formData.append('merchant_name', payload.merchant_name)
   return httpClient.post(ENDPOINT.ITEM, payload, { headers: { 'Content-Type': 'multipart/form-data' } })
+}
+export const updateItemAPI = async (payload: PutItemPayloadType): Promise<AxiosResponse<PutItemResponse>> => {
+  const formData = new FormData()
+  if (payload.image) {
+    formData.append('image', payload.image)
+  }
+  formData.append('name', payload.name)
+  formData.append('price', payload.price)
+  formData.append('category_id', payload.category_id)
+  formData.append('merchant_name', payload.merchant_name)
+  return httpClient.put(`${ENDPOINT.ITEM}/${payload.id}`, payload, { headers: { 'Content-Type': 'multipart/form-data' } })
 }

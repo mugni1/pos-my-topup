@@ -62,3 +62,20 @@ export interface DeleteItemResponse {
     meta: null
     errors: null
 }
+
+export interface PutItemPayloadType {
+    id: string
+    image: File | undefined | null
+    name: string
+    price: string
+    category_id: string
+    merchant_name: string
+}
+
+export interface PutItemResponse {
+    status: HttpStatusCode
+    message: string
+    data: PostDeleteItemType | null
+    meta: null
+    errors: null
+}

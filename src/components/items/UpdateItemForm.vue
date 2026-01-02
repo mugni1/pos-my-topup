@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Loader2, PlusCircle, SaveIcon, XCircle } from 'lucide-vue-next'
+  import { Loader2, PenBox, SaveIcon, XCircle } from 'lucide-vue-next'
   import { Button } from '../ui/button'
   import {
     Dialog,
@@ -11,8 +11,6 @@
     DialogTitle,
     DialogTrigger,
   } from '../ui/dialog'
-  import { useForm } from 'vee-validate'
-  import { createItemsSchemaValidate } from '@/validations/items'
   import {
     FormControl,
     FormDescription,
@@ -21,24 +19,35 @@
     FormLabel,
     FormMessage,
   } from '../ui/form'
+  import { useForm } from 'vee-validate'
+  import { updateItemsSchemaValidate } from '@/validations/items'
   import { Input } from '../ui/input'
   import { computed, inject, ref, watch } from 'vue'
   import { useQueryClient } from '@tanstack/vue-query'
   import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
   import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '../ui/input-group'
-  import { useGetCategories } from '@/hooks/useGetCategories'
-  import { usePostItem } from '@/hooks/usePostItem'
   import { HttpStatusCode } from 'axios'
   import { toast } from 'vue-sonner'
   import type { GetParamsType } from '@/types/global.type'
-  import type { PostItemResponse } from '@/types/items'
+  import type { ItemType, PostItemResponse } from '@/types/items'
+  import { DropdownMenuItem } from '../ui/dropdown-menu'
+  import { usePutItem } from '@/hooks/usePutItem'
   import { formatRupiah, parseRupiah } from '@/lib/formated'
+  import { useGetCategories } from '@/hooks/useGetCategories'
+
+  // PROPS
+  const props = defineProps<{
+    data: ItemType
+  }>()
 
   // INIT FORM
   const form = useForm({
-    validationSchema: createItemsSchemaValidate,
+    validationSchema: updateItemsSchemaValidate,
     initialValues: {
-      price: 0,
+      price: props.data.price,
+      name: props.data.name,
+      category_id: props.data.categoryId,
+      merchant_name: props.data.merchantName,
     },
   })
 
@@ -53,7 +62,7 @@
     })
   )
   const { data: categories, isPending: categoriesPending } = useGetCategories(categoryParams)
-  const { mutateAsync: createAsync, isPending: createPending } = usePostItem()
+  const { mutateAsync: updateAsync, isPending: updatePending } = usePutItem()
   const isOpen = ref(false)
   const tableParams = inject('tableParams')
   const queryClient = useQueryClient()
@@ -62,9 +71,15 @@
 
   // METHODS
   const handleSubmit = form.handleSubmit(async (values) => {
+    console.log(values)
     try {
-      const results = await createAsync({ ...values, price: values.price.toString() })
-      if (results.status != HttpStatusCode.Created) {
+      const results = await updateAsync({
+        ...values,
+        id: props.data.id,
+        image: values.image,
+        price: values.price.toString(),
+      })
+      if (results.status != HttpStatusCode.Ok) {
         toast.error(results.message, { action: { label: 'Close' } })
       } else {
         toast.success(results.message, { action: { label: 'Close' } })
@@ -82,13 +97,6 @@
 
   // WATCHERS
   watch(displayPrice, (newValue: string) => {
-    if (!newValue) {
-      price.value = 0
-      form.setFieldValue('price', 0)
-      return
-    }
-
-    // Format ulang input
     const formatted = formatRupiah(newValue)
     const parsedValue = parseRupiah(formatted)
 
@@ -107,6 +115,10 @@
       form.setFieldValue('price', 0)
       displayPrice.value = ''
       price.value = 0
+    } else {
+      form.setFieldValue('price', props.data.price)
+      displayPrice.value = formatRupiah(props.data.price.toString())
+      price.value = props.data.price
     }
   })
 </script>
@@ -114,10 +126,9 @@
 <template>
   <Dialog v-model:open="isOpen">
     <DialogTrigger as-child>
-      <Button type="button">
-        <PlusCircle class="mr-2 h-4 w-4" />
-        Create Item
-      </Button>
+      <DropdownMenuItem variant="default" size="icon" @select.prevent>
+        <PenBox /> Update
+      </DropdownMenuItem>
     </DialogTrigger>
 
     <DialogContent @openAutoFocus="(e) => e.preventDefault()" :showCloseButton="false">
@@ -222,7 +233,7 @@
         </div>
 
         <DialogFooter>
-          <Button v-if="createPending" type="button" disabled>
+          <Button v-if="updatePending" type="button" disabled>
             <Loader2 class="animate-spin" /> Loading..
           </Button>
           <Button v-else type="submit"> <SaveIcon /> Save Changes </Button>
