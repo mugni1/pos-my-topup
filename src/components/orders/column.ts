@@ -2,6 +2,7 @@ import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
 import { formatDateToLocale } from '@/lib/date'
 import type { GetOrderType } from '@/types/order'
+import ActionButton from './ActionButton.vue'
 
 export const columns: ColumnDef<GetOrderType>[] = [
     {
@@ -63,6 +64,20 @@ export const columns: ColumnDef<GetOrderType>[] = [
         },
         cell: ({ row }) => {
             return h('div', { class: 'text-start' }, formatDateToLocale(row.original.createdAt))
+        },
+    },
+    {
+        id: 'actions',
+        enableHiding: false,
+        enableSorting: false,
+        header: () => {
+            return h('div', { class: 'text-start' }, 'Actions')
+        },
+        cell: ({ row }) => {
+            const original = row.original
+            return h('div', { class: 'relative' }, h(ActionButton, {
+                data: original,
+            }))
         },
     },
 ]
