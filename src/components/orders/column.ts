@@ -3,6 +3,7 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import { formatDateToLocale } from '@/lib/date'
 import type { GetOrderType } from '@/types/order'
 import ActionButton from './ActionButton.vue'
+import ColumnStatus from './ColumnStatus.vue'
 
 export const columns: ColumnDef<GetOrderType>[] = [
     {
@@ -54,7 +55,9 @@ export const columns: ColumnDef<GetOrderType>[] = [
             return h('div', { class: 'text-start' }, 'Status')
         },
         cell: ({ row }) => {
-            return h('div', { class: 'text-start' }, row.original.status)
+            return h('div', { class: 'text-start' }, h(ColumnStatus, {
+                status: row.original.status
+            }))
         },
     },
     {
