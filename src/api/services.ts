@@ -5,6 +5,7 @@ import type { DeleteParamsType, GetParamsType } from '@/types/global.type';
 import type { DeleteCategoryResponse, GetCategoriesResponse, PostCategoryPayloadType, PostCategoryResponse, PutCategoryPayloadType, PutCategoryResponse } from '@/types/categories';
 import type { PostLoginPayloadType } from '@/types/auth';
 import type { DeleteItemResponse, GetItemsResponse, PostItemPayloadType, PostItemResponse, PutItemPayloadType, PutItemResponse } from '@/types/items';
+import type { GetOrdersResponse } from '@/types/order';
 
 // CATEGORY SERVICES
 export const getCategoriesAPI = async (params: GetParamsType): Promise<AxiosResponse<GetCategoriesResponse>> => {
@@ -51,4 +52,9 @@ export const updateItemAPI = async (payload: PutItemPayloadType): Promise<AxiosR
   formData.append('category_id', payload.category_id)
   formData.append('merchant_name', payload.merchant_name)
   return httpClient.put(`${ENDPOINT.ITEM}/${payload.id}`, payload, { headers: { 'Content-Type': 'multipart/form-data' } })
+}
+
+// ORDER SERVICES
+export const getOrdersAPI = async (params: GetParamsType): Promise<AxiosResponse<GetOrdersResponse>> => {
+  return httpClient.get(ENDPOINT.ORDER, { params })
 }

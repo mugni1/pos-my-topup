@@ -5,5 +5,6 @@ export const API_VERSION = {
 export const ENDPOINT = {
   LOGIN: `/auth/login`,
   CATEGORY: `/category`,
-  ITEM: `/item`
+  ITEM: `/item`,
+  ORDER: `/order`
 }
