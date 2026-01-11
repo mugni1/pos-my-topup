@@ -7,5 +7,6 @@ export const ENDPOINT = {
   CATEGORY: `/category`,
   ITEM: `/item`,
   ORDER: `/order`,
-  GAME: `/game`
+  GAME: `/game`,
+  STORAGE: `/storage`,
 }

@@ -3,9 +3,9 @@
   import { columns } from '@/components/games/columns'
   import DataTable from '@/components/table/DataTable.vue'
   import { provide } from 'vue'
-  import CreateCategoryForm from '@/components/categories/CreateCategoryForm.vue'
   import type { SortColumnType } from '@/types/global.type'
   import { useGetGames } from '@/hooks/useGetGames'
+  import FormDialogCreate from '@/components/games/FormDialogCreate.vue'
 
   // STATE
   const search = ref('')
@@ -64,7 +64,7 @@
     @refetch="handleRefetch"
   >
     <template #create-slot>
-      <CreateCategoryForm />
+      <FormDialogCreate />
     </template>
   </DataTable>
 </template>

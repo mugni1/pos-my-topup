@@ -6,7 +6,8 @@ import type { DeleteCategoryResponse, GetCategoriesResponse, PostCategoryPayload
 import type { PostLoginPayloadType } from '@/types/auth';
 import type { DeleteItemResponse, GetItemsResponse, PostItemPayloadType, PostItemResponse, PutItemPayloadType, PutItemResponse } from '@/types/items';
 import type { GetOrdersResponse } from '@/types/order';
-import type { GetGamesResponse } from '@/types/game';
+import type { GetGamesResponse, PostGamePayload, PostGameResponse } from '@/types/game';
+import type { PostFilePayload, PostFileResponse } from '@/types/storage';
 
 // CATEGORY SERVICES
 export const getCategoriesAPI = async (params: GetParamsType): Promise<AxiosResponse<GetCategoriesResponse>> => {
@@ -41,7 +42,7 @@ export const postItemsAPI = async (payload: PostItemPayloadType): Promise<AxiosR
   formData.append('price', payload.price)
   formData.append('category_id', payload.category_id)
   formData.append('merchant_name', payload.merchant_name)
-  return httpClient.post(ENDPOINT.ITEM, payload, { headers: { 'Content-Type': 'multipart/form-data' } })
+  return httpClient.post(ENDPOINT.ITEM, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
 }
 export const updateItemAPI = async (payload: PutItemPayloadType): Promise<AxiosResponse<PutItemResponse>> => {
   const formData = new FormData()
@@ -52,7 +53,7 @@ export const updateItemAPI = async (payload: PutItemPayloadType): Promise<AxiosR
   formData.append('price', payload.price)
   formData.append('category_id', payload.category_id)
   formData.append('merchant_name', payload.merchant_name)
-  return httpClient.put(`${ENDPOINT.ITEM}/${payload.id}`, payload, { headers: { 'Content-Type': 'multipart/form-data' } })
+  return httpClient.put(`${ENDPOINT.ITEM}/${payload.id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
 }
 
 // ORDER SERVICES
@@ -63,4 +64,14 @@ export const getOrdersAPI = async (params: GetParamsType): Promise<AxiosResponse
 // GAMES SERVICES
 export const getGamesAPI = async (params: GetParamsType): Promise<AxiosResponse<GetGamesResponse>> => {
   return httpClient.get(ENDPOINT.GAME, { params })
+}
+export const postGameAPI = async (payload: PostGamePayload): Promise<AxiosResponse<PostGameResponse>> => {
+  return httpClient.post(ENDPOINT.GAME, payload)
+}
+
+// STORAGE SERVICES
+export const postFileAPI = async (payload: PostFilePayload): Promise<AxiosResponse<PostFileResponse>> => {
+  const formData = new FormData()
+  formData.append('image', payload.image)
+  return httpClient.post(ENDPOINT.STORAGE, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
 }
