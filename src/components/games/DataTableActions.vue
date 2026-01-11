@@ -1,0 +1,35 @@
+<script setup lang="ts">
+  import { MoreHorizontal, PenBoxIcon, Trash2Icon } from 'lucide-vue-next'
+  import { Button } from '@/components/ui/button'
+  import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+  } from '@/components/ui/dropdown-menu'
+  import type { GetGameType } from '@/types/game'
+
+  // PROPS
+  const props = defineProps<{
+    data: GetGameType
+  }>()
+</script>
+
+<template>
+  <DropdownMenu>
+    <DropdownMenuTrigger as-child>
+      <Button variant="ghost" class="w-8 h-8 p-0">
+        <span class="sr-only">Open menu</span>
+        <MoreHorizontal class="w-4 h-4" />
+      </Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent align="end">
+      <DropdownMenuLabel>Actions</DropdownMenuLabel>
+      <DropdownMenuItem variant="destructive"> <Trash2Icon /> Delete </DropdownMenuItem>
+      <DropdownMenuItem variant="default"> <PenBoxIcon /> Update </DropdownMenuItem>
+      <!-- <DeleteItemDialog :data="data" />
+      <UpdateItemForm :data="data" /> -->
+    </DropdownMenuContent>
+  </DropdownMenu>
+</template>

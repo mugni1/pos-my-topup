@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import { computed, ref } from 'vue'
-  import { columns } from '@/components/categories/columns'
+  import { columns } from '@/components/games/columns'
   import DataTable from '@/components/table/DataTable.vue'
-  import { useGetCategories } from '@/hooks/useGetCategories'
   import { provide } from 'vue'
   import CreateCategoryForm from '@/components/categories/CreateCategoryForm.vue'
   import type { SortColumnType } from '@/types/global.type'
+  import { useGetGames } from '@/hooks/useGetGames'
 
   // STATE
   const search = ref('')
@@ -23,7 +23,7 @@
   provide('tableParams', tableParams)
 
   // HOOKS
-  const { data, isPending, isError, isFetching, refetch } = useGetCategories(tableParams)
+  const { data, isPending, isError, isFetching, refetch } = useGetGames(tableParams)
 
   // METHODS
   const handleChangePage = (value: number) => {

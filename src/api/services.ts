@@ -6,6 +6,7 @@ import type { DeleteCategoryResponse, GetCategoriesResponse, PostCategoryPayload
 import type { PostLoginPayloadType } from '@/types/auth';
 import type { DeleteItemResponse, GetItemsResponse, PostItemPayloadType, PostItemResponse, PutItemPayloadType, PutItemResponse } from '@/types/items';
 import type { GetOrdersResponse } from '@/types/order';
+import type { GetGamesResponse } from '@/types/game';
 
 // CATEGORY SERVICES
 export const getCategoriesAPI = async (params: GetParamsType): Promise<AxiosResponse<GetCategoriesResponse>> => {
@@ -57,4 +58,9 @@ export const updateItemAPI = async (payload: PutItemPayloadType): Promise<AxiosR
 // ORDER SERVICES
 export const getOrdersAPI = async (params: GetParamsType): Promise<AxiosResponse<GetOrdersResponse>> => {
   return httpClient.get(ENDPOINT.ORDER, { params })
+}
+
+// GAMES SERVICES
+export const getGamesAPI = async (params: GetParamsType): Promise<AxiosResponse<GetGamesResponse>> => {
+  return httpClient.get(ENDPOINT.GAME, { params })
 }
