@@ -5,15 +5,17 @@ import ItemsView from '@/views/ItemsView.vue'
 import OrdersView from '@/views/OrdersView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
+import GamesView from '@/views/GamesView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    { path: '/login', name: 'login', component: LoginView, },
     { path: '/', name: 'dashboard', component: HomeView, meta: { requiresAuth: true } },
-    { path: '/login', name: 'login', component: LoginView },
-    { path: '/categories', name: 'categories', component: CategoriesView },
-    { path: '/items', name: 'items', component: ItemsView },
-    { path: '/orders', name: 'orders', component: OrdersView },
+    { path: '/categories', name: 'categories', component: CategoriesView, meta: { requiresAuth: true } },
+    { path: '/items', name: 'items', component: ItemsView, meta: { requiresAuth: true } },
+    { path: '/orders', name: 'orders', component: OrdersView, meta: { requiresAuth: true } },
+    { path: '/games', name: 'games', component: GamesView, meta: { requiresAuth: true } },
   ],
 })
 
