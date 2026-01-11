@@ -1,11 +1,12 @@
 <script setup lang="ts">
+  import 'vue-sonner/style.css'
   import AppSidebar from '@/components/sidebar/AppSidebar.vue'
   import { Separator } from '@/components/ui/separator'
   import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
   import { RouterView } from 'vue-router'
   import { Toaster } from '@/components/ui/sonner'
-  import 'vue-sonner/style.css'
   import BaseBreadcrumb from './components/breadcrumbs/BaseBreadcrumb.vue'
+  import ToggleMode from './components/mode/ToggleMode.vue'
 </script>
 
 <template>
@@ -14,12 +15,13 @@
       <AppSidebar />
       <SidebarInset>
         <header class="header">
-          <div class="flex items-center justify-between px-4">
-            <div class="flex items-center gap-2">
-              <SidebarTrigger class="-ml-1" />
-              <Separator orientation="vertical" class="mr-2 data-[orientation=vertical]:h-4" />
-              <BaseBreadcrumb />
-            </div>
+          <div class="flex items-center gap-2 py-2">
+            <SidebarTrigger />
+            <Separator orientation="vertical" class="h-4" />
+            <BaseBreadcrumb />
+          </div>
+          <div class="overflow-hidden items-center flex">
+            <ToggleMode />
           </div>
         </header>
         <section class="main-container">
@@ -40,10 +42,10 @@
   @import './assets/main.css';
 
   .header {
-    @apply flex h-12 items-center gap-2 fixed w-full border-b bg-white z-50;
+    @apply sticky w-full top-0 z-50 bg-popover border-b flex justify-between items-center px-4 overflow-hidden;
   }
 
   .main-container {
-    @apply flex flex-col gap-4 p-4 w-full overflow-auto pt-16;
+    @apply flex flex-col gap-4 p-4 w-full overflow-auto;
   }
 </style>
