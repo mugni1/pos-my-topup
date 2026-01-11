@@ -120,7 +120,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans selection:text-background selection:bg-foreground;
+    @apply bg-background text-foreground font-sans selection:text-background selection:bg-foreground overflow-x-hidden;
   }
 }
 

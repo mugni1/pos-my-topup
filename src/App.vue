@@ -25,7 +25,7 @@
           </div>
         </header>
         <section class="main-container">
-          <div class="w-full h-full space-y-4 overflow-x-auto">
+          <div class="w-full min-w-0 space-y-4">
             <RouterView />
           </div>
         </section>
@@ -42,10 +42,10 @@
   @import './assets/main.css';
 
   .header {
-    @apply sticky w-full top-0 z-50 bg-popover border-b flex justify-between items-center px-4 overflow-hidden;
+    @apply sticky w-full top-0 z-40 bg-popover border-b flex justify-between items-center px-4 overflow-hidden;
   }
 
   .main-container {
-    @apply flex flex-col gap-4 p-4 w-full overflow-auto;
+    @apply flex-1 w-full min-w-0 flex flex-col gap-4 p-4 overflow-y-auto overflow-x-hidden;
   }
 </style>

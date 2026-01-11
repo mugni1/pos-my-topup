@@ -127,7 +127,7 @@
 
 <template>
   <!-- SEARCH  -->
-  <div class="flex flex-col lg:flex-row justify-between gap-2">
+  <div class="flex flex-col md:flex-row justify-between gap-2">
     <InputGroup class="max-w-sm">
       <InputGroupInput placeholder="Search..." v-model="keywordTemp" />
       <InputGroupAddon>
