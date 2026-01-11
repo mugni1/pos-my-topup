@@ -2,7 +2,7 @@ import { BaggageClaim, GalleryVerticalEnd, Gamepad, LayoutDashboardIcon, LucideB
 
 export const data = {
     header: {
-        name: 'POS MyTopUp',
+        name: 'POS MYTOPUP',
         logo: GalleryVerticalEnd,
         plan: 'Enterprise',
     },

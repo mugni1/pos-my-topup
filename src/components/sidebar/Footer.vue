@@ -49,10 +49,10 @@
           >
             <Avatar class="h-8 w-8 rounded-lg">
               <!-- <AvatarImage :src="user.avatar" :alt="user.name" /> -->
-              <AvatarFallback v-if="user" class="rounded-md bg-muted-foreground">
+              <AvatarFallback v-if="user" class="rounded-md bg-sidebar-primary">
                 {{ user.name.charAt(0).toUpperCase() }}
               </AvatarFallback>
-              <AvatarFallback v-if="!user" class="rounded-md bg-muted-foreground">
+              <AvatarFallback v-if="!user" class="rounded-md bg-sidebar-primary">
                 A
               </AvatarFallback>
             </Avatar>
@@ -75,10 +75,10 @@
             <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
               <Avatar class="h-8 w-8 rounded-lg">
                 <!-- <AvatarImage :src="user.avatar" :alt="user.name" /> -->
-                <AvatarFallback v-if="user" class="rounded-md bg-muted-foreground">
+                <AvatarFallback v-if="user" class="rounded-md bg-sidebar-primary">
                   {{ user.name.charAt(0).toUpperCase() }}
                 </AvatarFallback>
-                <AvatarFallback v-if="!user" class="rounded-md bg-muted-foreground">
+                <AvatarFallback v-if="!user" class="rounded-md bg-sidebar-primary">
                   A
                 </AvatarFallback>
               </Avatar>
