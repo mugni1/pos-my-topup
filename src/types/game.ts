@@ -38,3 +38,21 @@ export interface PostGameResponse {
     meta: null
     errors: null
 }
+
+export interface PutGamePayload {
+    id: string
+    title: string | undefined | null
+    studio: string | undefined | null
+    image_url: string | undefined | null
+    image_id: string | undefined | null
+    cover_url: string | undefined | null
+    cover_id: string | undefined | null
+}
+
+export interface PutGameResponse {
+    status: HttpStatusCode
+    message: string
+    data: GetGameType | null
+    meta: null
+    errors: null
+}

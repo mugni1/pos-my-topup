@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { MoreHorizontal, PenBoxIcon, Trash2Icon } from 'lucide-vue-next'
+  import { MoreHorizontal, Trash2Icon } from 'lucide-vue-next'
   import { Button } from '@/components/ui/button'
   import {
     DropdownMenu,
@@ -9,6 +9,7 @@
     DropdownMenuTrigger,
   } from '@/components/ui/dropdown-menu'
   import type { GetGameType } from '@/types/game'
+  import FormDialogUpdate from './FormDialogUpdate.vue'
 
   // PROPS
   const props = defineProps<{
@@ -27,9 +28,7 @@
     <DropdownMenuContent align="end">
       <DropdownMenuLabel>Actions</DropdownMenuLabel>
       <DropdownMenuItem variant="destructive"> <Trash2Icon /> Delete </DropdownMenuItem>
-      <DropdownMenuItem variant="default"> <PenBoxIcon /> Update </DropdownMenuItem>
-      <!-- <DeleteItemDialog :data="data" />
-      <UpdateItemForm :data="data" /> -->
+      <FormDialogUpdate :data="data" />
     </DropdownMenuContent>
   </DropdownMenu>
 </template>

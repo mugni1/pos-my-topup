@@ -5,5 +5,5 @@
 </script>
 
 <template>
-  <img :src="cover_url" class="h-15 rounded" alt="" />
+  <img :src="cover_url" class="h-15 w-full object-cover object-center rounded" alt="cover" />
 </template>
