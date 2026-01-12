@@ -37,24 +37,10 @@ export const deleteItemAPI = async (params: DeleteParamsType): Promise<AxiosResp
   return httpClient.delete(`${ENDPOINT.ITEM}/${params.id}`)
 }
 export const postItemsAPI = async (payload: PostItemPayloadType): Promise<AxiosResponse<PostItemResponse>> => {
-  const formData = new FormData()
-  formData.append('image', payload.image)
-  formData.append('name', payload.name)
-  formData.append('price', payload.price)
-  formData.append('category_id', payload.category_id)
-  formData.append('merchant_name', payload.merchant_name)
-  return httpClient.post(ENDPOINT.ITEM, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+  return httpClient.post(ENDPOINT.ITEM, payload)
 }
 export const updateItemAPI = async (payload: PutItemPayloadType): Promise<AxiosResponse<PutItemResponse>> => {
-  const formData = new FormData()
-  if (payload.image) {
-    formData.append('image', payload.image)
-  }
-  formData.append('name', payload.name)
-  formData.append('price', payload.price)
-  formData.append('category_id', payload.category_id)
-  formData.append('merchant_name', payload.merchant_name)
-  return httpClient.put(`${ENDPOINT.ITEM}/${payload.id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+  return httpClient.put(`${ENDPOINT.ITEM}/${payload.id}`, payload)
 }
 
 // ORDER SERVICES

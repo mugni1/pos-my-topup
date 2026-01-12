@@ -9,7 +9,7 @@ export const createItemsSchemaValidate = toTypedSchema(
         category_id: z.string({ required_error: "Please select category" }).cuid("Please select valid category"),
         image: z
             .instanceof(File, { message: "Please upload an image file" })
-            .refine(file => file.size <= 1 * 1024 * 1024, `Max file size is 1MB`)
+            .refine(file => file.size <= 3 * 1024 * 1024, `Max file size is 3MB`)
             .refine(file => ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'].includes(file.type), "Only .jpg, .jpeg, .png, .webp and .gif formats are supported")
     })
 )

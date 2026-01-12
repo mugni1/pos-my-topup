@@ -27,11 +27,12 @@ export interface GetItemsResponse {
 }
 
 export interface PostItemPayloadType {
-    image: File
     name: string
-    price: string
+    price: number
     category_id: string
     merchant_name: string
+    image_url: string
+    image_id: string
 }
 
 interface PostDeleteItemType {
@@ -65,11 +66,12 @@ export interface DeleteItemResponse {
 
 export interface PutItemPayloadType {
     id: string
-    image: File | undefined | null
-    name: string
-    price: string
-    category_id: string
-    merchant_name: string
+    name: string | undefined
+    price: number | undefined
+    category_id: string | undefined
+    merchant_name: string | undefined
+    image_url: string | undefined
+    image_id: string | undefined
 }
 
 export interface PutItemResponse {

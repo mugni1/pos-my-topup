@@ -33,6 +33,8 @@
   import type { GetParamsType } from '@/types/global.type'
   import type { PostItemResponse } from '@/types/items'
   import { formatRupiah, parseRupiah } from '@/lib/formated'
+  import { usePostFile } from '@/hooks/usePostFile'
+import type { PostFileResponse } from '@/types/storage'
 
   // INIT FORM
   const form = useForm({
@@ -53,7 +55,8 @@
     })
   )
   const { data: categories, isPending: categoriesPending } = useGetCategories(categoryParams)
-  const { mutateAsync: createAsync, isPending: createPending } = usePostItem()
+  const { mutateAsync: mutateItem, isPending: isPendingItem } = usePostItem()
+  const { mutateAsync: mutateFile, isPending: isPendingFile } = usePostFile()
   const isOpen = ref(false)
   const tableParams = inject('tableParams')
   const queryClient = useQueryClient()
@@ -62,8 +65,27 @@
 
   // METHODS
   const handleSubmit = form.handleSubmit(async (values) => {
+    let image_url = undefined
+    let image_id = undefined
+    
     try {
-      const results = await createAsync({ ...values, price: values.price.toString() })
+      const result = await mutateFile({image: values.image})
+      if(result.status != HttpStatusCode.Ok){
+        toast.error(result.message, {action: {label: 'close'}})
+        return
+      }else{
+        toast.success(result.message, {action: {label: 'close'}})
+        image_url = result.data?.image_url || ""
+        image_id = result.data?.public_id || ""
+      }
+    }catch(err: unknown) {
+      const errors =  err as PostFileResponse
+      toast.error(errors.message, {action: {label: 'close'}})
+      return
+    }
+    
+    try {
+      const results = await mutateItem({ ...values, price: Number(values.price), image_url, image_id  })
       if (results.status != HttpStatusCode.Created) {
         toast.error(results.message, { action: { label: 'Close' } })
       } else {
@@ -222,7 +244,7 @@
         </div>
 
         <DialogFooter>
-          <Button v-if="createPending" type="button" disabled>
+          <Button v-if="isPendingFile || isPendingItem" type="button" disabled>
             <Loader2 class="animate-spin" /> Loading..
           </Button>
           <Button v-else type="submit"> <SaveIcon /> Save Changes </Button>
