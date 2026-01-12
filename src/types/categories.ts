@@ -1,5 +1,6 @@
 import type { HttpStatusCode } from "axios"
 import type { MetaType } from "./global.type"
+import type { UpdateCategoryPayload } from "@/validations/categories"
 
 export interface CategoryTable {
     id: string
@@ -12,6 +13,7 @@ export interface CategoryType {
     id: string
     name: string
     code: string
+    gameId: string
     createdAt: string
     updatedAt: string
 }
@@ -47,8 +49,7 @@ export interface PostCategoryResponse {
 
 export interface PutCategoryPayloadType {
     id: string
-    name: string
-    code: string
+    data: UpdateCategoryPayload
 }
 
 export interface PutCategoryResponse {

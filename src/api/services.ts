@@ -2,13 +2,13 @@ import type { AxiosResponse } from 'axios';
 import { ENDPOINT } from './endpoints'
 import { httpClient } from './httpClient'
 import type { DeleteParamsType, GetParamsType } from '@/types/global.type';
-import type { DeleteCategoryResponse, GetCategoriesResponse, PostCategoryPayloadType, PostCategoryResponse, PutCategoryPayloadType, PutCategoryResponse } from '@/types/categories';
+import type { DeleteCategoryResponse, GetCategoriesResponse, PostCategoryResponse, PutCategoryPayloadType, PutCategoryResponse } from '@/types/categories';
 import type { PostLoginPayloadType } from '@/types/auth';
 import type { DeleteItemResponse, GetItemsResponse, PostItemPayloadType, PostItemResponse, PutItemPayloadType, PutItemResponse } from '@/types/items';
 import type { GetOrdersResponse } from '@/types/order';
 import type { DeleteGameResponse, GetGamesResponse, PostGamePayload, PostGameResponse, PutGamePayload, PutGameResponse } from '@/types/game';
 import type { PostFilePayload, PostFileResponse } from '@/types/storage';
-import type { CreateCategoryPayload } from '@/validations/categories';
+import type { CreateCategoryPayload, UpdateCategoryPayload } from '@/validations/categories';
 
 // CATEGORY SERVICES
 export const getCategoriesAPI = async (params: GetParamsType): Promise<AxiosResponse<GetCategoriesResponse>> => {
@@ -21,7 +21,7 @@ export const postCategoryAPI = async (payload: CreateCategoryPayload): Promise<A
   return httpClient.post(`${ENDPOINT.CATEGORY}`, payload)
 }
 export const putCategoryAPI = async (payload: PutCategoryPayloadType): Promise<AxiosResponse<PutCategoryResponse>> => {
-  return httpClient.put(`${ENDPOINT.CATEGORY}/${payload.id}`, payload)
+  return httpClient.put(`${ENDPOINT.CATEGORY}/${payload.id}`, payload.data)
 }
 
 // AUTH SERVICES
