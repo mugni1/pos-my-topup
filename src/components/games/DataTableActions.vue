@@ -10,6 +10,7 @@
   } from '@/components/ui/dropdown-menu'
   import type { GetGameType } from '@/types/game'
   import FormDialogUpdate from './FormDialogUpdate.vue'
+  import FormDialogDelete from './FormDialogDelete.vue'
 
   // PROPS
   const props = defineProps<{
@@ -27,7 +28,7 @@
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
       <DropdownMenuLabel>Actions</DropdownMenuLabel>
-      <DropdownMenuItem variant="destructive"> <Trash2Icon /> Delete </DropdownMenuItem>
+      <FormDialogDelete :data="data" />
       <FormDialogUpdate :data="data" />
     </DropdownMenuContent>
   </DropdownMenu>

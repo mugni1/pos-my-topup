@@ -56,3 +56,11 @@ export interface PutGameResponse {
     meta: null
     errors: null
 }
+
+export interface DeleteGameResponse {
+    status: HttpStatusCode
+    message: string
+    data: GetGameType | null
+    meta: null
+    errors: null
+}

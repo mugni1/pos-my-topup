@@ -68,9 +68,7 @@
         } else {
           toast.success(results.message, { action: { label: 'Close' } })
           isOpen.value = false
-          queryClient.refetchQueries({
-            queryKey: ['games', tableParams],
-          })
+          queryClient.refetchQueries({ queryKey: ['games', tableParams] })
         }
       } catch (err: unknown) {
         const error = err as PostCategoryResponse

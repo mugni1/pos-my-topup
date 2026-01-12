@@ -6,7 +6,7 @@ import type { DeleteCategoryResponse, GetCategoriesResponse, PostCategoryPayload
 import type { PostLoginPayloadType } from '@/types/auth';
 import type { DeleteItemResponse, GetItemsResponse, PostItemPayloadType, PostItemResponse, PutItemPayloadType, PutItemResponse } from '@/types/items';
 import type { GetOrdersResponse } from '@/types/order';
-import type { GetGamesResponse, PostGamePayload, PostGameResponse, PutGamePayload, PutGameResponse } from '@/types/game';
+import type { DeleteGameResponse, GetGamesResponse, PostGamePayload, PostGameResponse, PutGamePayload, PutGameResponse } from '@/types/game';
 import type { PostFilePayload, PostFileResponse } from '@/types/storage';
 
 // CATEGORY SERVICES
@@ -70,6 +70,9 @@ export const postGameAPI = async (payload: PostGamePayload): Promise<AxiosRespon
 }
 export const putGameAPI = async (payload: PutGamePayload): Promise<AxiosResponse<PutGameResponse>> => {
   return httpClient.put(`${ENDPOINT.GAME}/${payload.id}`, payload)
+}
+export const deleteGameAPI = async (params: DeleteParamsType): Promise<AxiosResponse<DeleteGameResponse>> => {
+  return httpClient.delete(`${ENDPOINT.GAME}/${params.id}`)
 }
 
 // STORAGE SERVICES
