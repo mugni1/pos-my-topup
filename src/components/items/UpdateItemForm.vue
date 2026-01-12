@@ -34,6 +34,8 @@
   import { usePutItem } from '@/hooks/usePutItem'
   import { formatRupiah, parseRupiah } from '@/lib/formated'
   import { useGetCategories } from '@/hooks/useGetCategories'
+  import { usePostFile } from '@/hooks/usePostFile'
+  import type { PostFileResponse } from '@/types/storage'
 
   // PROPS
   const props = defineProps<{
@@ -62,7 +64,8 @@
     })
   )
   const { data: categories, isPending: categoriesPending } = useGetCategories(categoryParams)
-  const { mutateAsync: updateAsync, isPending: updatePending } = usePutItem()
+  const { mutateAsync: mutateFile, isPending: isPendingFile } = usePostFile()
+  const { mutateAsync: mutateItem, isPending: isPendingItem } = usePutItem()
   const isOpen = ref(false)
   const tableParams = inject('tableParams')
   const queryClient = useQueryClient()
@@ -71,25 +74,46 @@
 
   // METHODS
   const handleSubmit = form.handleSubmit(async (values) => {
-    console.log(values)
+    let image_url = undefined
+    let image_id = undefined
+    
+    if(values.image) {
+      try {
+        const result = await mutateFile({image: values.image})
+        if(result.status != HttpStatusCode.Ok){
+          toast.error(result.message, {action: {label: 'close'}})
+          return
+        }else{
+          toast.success(result.message, {action: {label: 'close'}})
+          image_url = result.data?.image_url || ""
+          image_id = result.data?.public_id || ""
+        }
+      }catch(err: unknown) {
+        const errors =  err as PostFileResponse
+        toast.error(errors.message, {action: {label: 'close'}})
+        return
+      }
+    }
+    
     try {
-      const results = await updateAsync({
+      const results = await mutateItem({
         ...values,
         id: props.data.id,
-        image: values.image,
-        price: values.price.toString(),
+        price: Number(values.price),
+        image_url,
+        image_id
       })
       if (results.status != HttpStatusCode.Ok) {
-        toast.error(results.message, { action: { label: 'Close' } })
+        toast.error(results.message, { action: { label: 'close' } })
       } else {
-        toast.success(results.message, { action: { label: 'Close' } })
+        toast.success(results.message, { action: { label: 'close' } })
         queryClient.refetchQueries({
           queryKey: ['items', tableParams],
         })
       }
     } catch (err: unknown) {
       const error = err as PostItemResponse
-      toast.error(error.message, { action: { label: 'Close' } })
+      toast.error(error.message, { action: { label: 'close' } })
     } finally {
       isOpen.value = false
     }
@@ -119,6 +143,9 @@
       form.setFieldValue('price', props.data.price)
       displayPrice.value = formatRupiah(props.data.price.toString())
       price.value = props.data.price
+      form.setFieldValue('name', props.data.name)
+      form.setFieldValue('merchant_name', props.data.merchantName)
+      form.setFieldValue('category_id', props.data.categoryId)
     }
   })
 </script>
@@ -233,7 +260,7 @@
         </div>
 
         <DialogFooter>
-          <Button v-if="updatePending" type="button" disabled>
+          <Button v-if="isPendingFile || isPendingItem" type="button" disabled>
             <Loader2 class="animate-spin" /> Loading..
           </Button>
           <Button v-else type="submit"> <SaveIcon /> Save Changes </Button>
