@@ -8,6 +8,7 @@ import type { DeleteItemResponse, GetItemsResponse, PostItemPayloadType, PostIte
 import type { GetOrdersResponse } from '@/types/order';
 import type { DeleteGameResponse, GetGamesResponse, PostGamePayload, PostGameResponse, PutGamePayload, PutGameResponse } from '@/types/game';
 import type { PostFilePayload, PostFileResponse } from '@/types/storage';
+import type { CreateCategoryPayload } from '@/validations/categories';
 
 // CATEGORY SERVICES
 export const getCategoriesAPI = async (params: GetParamsType): Promise<AxiosResponse<GetCategoriesResponse>> => {
@@ -16,7 +17,7 @@ export const getCategoriesAPI = async (params: GetParamsType): Promise<AxiosResp
 export const deleteCategoryAPI = async (params: DeleteParamsType): Promise<AxiosResponse<DeleteCategoryResponse>> => {
   return httpClient.delete(`${ENDPOINT.CATEGORY}/${params.id}`)
 }
-export const postCategoryAPI = async (payload: PostCategoryPayloadType): Promise<AxiosResponse<PostCategoryResponse>> => {
+export const postCategoryAPI = async (payload: CreateCategoryPayload): Promise<AxiosResponse<PostCategoryResponse>> => {
   return httpClient.post(`${ENDPOINT.CATEGORY}`, payload)
 }
 export const putCategoryAPI = async (payload: PutCategoryPayloadType): Promise<AxiosResponse<PutCategoryResponse>> => {

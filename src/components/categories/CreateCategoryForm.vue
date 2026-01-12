@@ -12,22 +12,43 @@
     DialogTrigger,
   } from '../ui/dialog'
   import { useForm } from 'vee-validate'
-  import { createCategorySchemaValidate } from '@/validations/categories'
+  import { createCategorySchema } from '@/validations/categories'
   import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
   import { Input } from '../ui/input'
   import { usePostCategory } from '@/hooks/usePostCategory'
   import { HttpStatusCode } from 'axios'
   import { toast } from 'vue-sonner'
-  import { inject, ref } from 'vue'
+  import { computed, inject, ref } from 'vue'
   import { useQueryClient } from '@tanstack/vue-query'
   import type { PostCategoryResponse } from '@/types/categories'
+  import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+  } from '../ui/select'
+  import { useGetGames } from '@/hooks/useGetGames'
+  import type { GetParamsType } from '@/types/global.type'
 
   // INIT FORM
-  const form = useForm({ validationSchema: createCategorySchemaValidate })
+  const form = useForm({ validationSchema: createCategorySchema })
 
   // STATE
+  const gameParams = computed(
+    (): GetParamsType => ({
+      limit: 1000,
+      orderBy: 'createdAt',
+      sortBy: 'desc',
+      page: 1,
+      search: '',
+    })
+  )
+  const { data, isPending: isPendingGame } = useGetGames(gameParams)
+  const { mutateAsync, isPending: isPendingCategory } = usePostCategory()
   const isOpen = ref(false)
-  const { mutateAsync, isPending } = usePostCategory()
   const tableParams = inject('tableParams')
   const queryClient = useQueryClient()
 
@@ -36,17 +57,17 @@
     try {
       const results = await mutateAsync(values)
       if (results.status != HttpStatusCode.Created) {
-        toast.error(results.message, { action: { label: 'Close' } })
+        toast.error(results.message, { action: { label: 'close' } })
       } else {
-        toast.success(results.message, { action: { label: 'Close' } })
-        isOpen.value = false
+        toast.success(results.message, { action: { label: 'close' } })
         queryClient.refetchQueries({
           queryKey: ['categories', tableParams],
         })
+        isOpen.value = false
       }
     } catch (err: unknown) {
       const error = err as PostCategoryResponse
-      toast.error(error.message, { action: { label: 'Close' } })
+      toast.error(error.message, { action: { label: 'close' } })
     }
   })
 </script>
@@ -65,6 +86,7 @@
             Make changes to your profile here. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
+
         <div class="max-h-[65vh] overflow-y-scroll space-y-4 my-3 py-2 px-5 me-2">
           <FormField v-slot="{ componentField }" name="name">
             <FormItem>
@@ -75,6 +97,7 @@
               <FormMessage />
             </FormItem>
           </FormField>
+
           <FormField v-slot="{ componentField }" name="code">
             <FormItem>
               <FormLabel>Code</FormLabel>
@@ -84,9 +107,30 @@
               <FormMessage />
             </FormItem>
           </FormField>
+
+          <FormField v-slot="{ componentField }" name="game_id">
+            <FormItem>
+              <FormLabel>Game</FormLabel>
+              <Select v-bind="componentField">
+                <SelectTrigger class="w-full">
+                  <SelectValue :placeholder="isPendingGame ? 'Loading..' : 'Select game'" />
+                </SelectTrigger>
+                <SelectContent class="max-h-[50vh]">
+                  <SelectGroup>
+                    <SelectLabel>List of games</SelectLabel>
+                    <SelectItem v-for="game in data?.data || []" :key="game.id" :value="game.id">
+                      {{ game.title }}
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          </FormField>
         </div>
+
         <DialogFooter>
-          <Button type="submit" v-if="!isPending"> <SaveIcon /> Save Changes </Button>
+          <Button type="submit" v-if="!isPendingCategory"> <SaveIcon /> Save Changes </Button>
           <Button type="button" v-else disabled>
             <Loader2Icon class="animate-spin" /> Loading..
           </Button>

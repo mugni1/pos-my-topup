@@ -13,7 +13,7 @@
     DialogTrigger,
   } from '../ui/dialog'
   import { useForm } from 'vee-validate'
-  import { createCategorySchemaValidate } from '@/validations/categories'
+  import { createCategorySchema } from '@/validations/categories'
   import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
   import { Input } from '../ui/input'
   import { HttpStatusCode } from 'axios'
@@ -36,7 +36,7 @@
 
   // INIT FORM
   const form = useForm({
-    validationSchema: createCategorySchemaValidate,
+    validationSchema: createCategorySchema,
     initialValues: {
       name: props.data.name,
       code: props.data.code,
